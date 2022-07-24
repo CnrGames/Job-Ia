@@ -1,0 +1,97 @@
+ 
+#alternativa 2
+ def _dfs(borda, visitado):
+      no = borda.pop()
+      state = no[0]
+      visitado.append(state)
+      # parada
+      if problem.isGoalState(state):
+          return []
+      d = problem.getSuccessors(state)
+
+      for i in (d):
+          if i[0] not in visitado:
+              borda.push(i)
+              caminho = _dfs(borda, visitado)
+              if (caminho != None):
+                  caminho.insert(0,i[1])
+                  return caminho
+
+    b = util.Stack()
+    v = []
+    #primeiro no conforme tripla do metodo getSuccessors (sucessor, acao, custo)
+    _primeiro_no = (problem.getStartState(),'',0)
+    b.push(_primeiro_no)
+
+    return _dfs(b, v)
+
+  #alt0
+
+    from util import Stack
+
+    # pilha: ((x,y),[caminho]) #
+    pilha = Stack()
+
+    visited = [] # estados visitados
+    path = [] # Every state keeps it's path from the starting state
+
+    #verf se o estado inicial e o objectivo#
+    if problem.isGoalState(problem.getStartState()):
+        return []
+
+    #encontrar solucao comecando do zero#
+    pilha.push((problem.getStartState(),[]))
+
+    #print("pilha"+pilha)
+    while(True):
+
+        # termina se n puder encontrar solucao#
+        if pilha.isEmpty():
+            return []
+
+        # obter info do estado actual #
+        xy,path = pilha.pop() # levar  posicao e caminho
+        visited.append(xy)
+
+
+        # parar de andar se encontrar o objectivo #
+        if problem.isGoalState(xy):
+         return path
+
+        # obter sucessor do estado actual#
+        #print(pilha)
+        succ = problem.getSuccessors(xy)
+
+        # add novo estado na pilha e fixar caminho do msm estado #
+
+        if succ:
+            for item in succ:
+                if item[0] not in visited:
+
+
+                    newPath = path + [item[1]] # calcular novo caminho
+                    pilha.push((item[0],newPath))
+                    #print ("Start's successors:", item[0])
+
+
+#alt 3
+
+pilha = util.Stack()
+    # Apenas localização, como [1, 1]
+    local_inicial = problem.getStartState()
+    #(local, caminho)
+    startNode = (local_inicial, [])
+    pilha.push(startNode)
+    l_visitado = set()
+
+    while not pilha.isEmpty():
+       # no[0] é a localização, enquanto no[1] é o caminho
+        no = pilha.pop()
+        l_visitado.add(no[0])
+        if problem.isGoalState(no[0]):
+            return no[1]
+        successors = problem.getSuccessors(no[0])
+        for item in successors:
+            if item[0] in l_visitado:
+                continue
+            pilha.push((item[0], no[1] + [item[1]]))
